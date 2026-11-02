@@ -1,0 +1,36 @@
+Airport Code Lookup Service (BST). Type 'help' for commands.
+> # Demo script for the screen recording: ./airports --echo < docs/demo.txt
+> load data/airports.dat
+Loaded 6072 airports (1626 lines skipped: no IATA code). Duplicates: 0
+Lines read: 7698  Records stored: 6072  from data/airports.dat
+Height: 177  Average depth: 18.3
+> find BOS
+Path: GKA -> AEY -> EGS -> BUJ -> BJA -> BSK -> BOY -> BNI -> BOH -> BOO -> BOU -> BOS (comparisons: 12)
+BOS  General Edward Lawrence Logan International Airport, Boston, United States
+    ICAO: KBOS   lat 42.36430, lon -71.00520
+> find XYZ
+Path: GKA -> MAG -> POM -> WWK -> YAM -> XFW -> XGN -> XLS -> XRY -> XVS -> YAI -> YAA -> XYA -> XYE -> (NULL) not found (comparisons: 14)
+> min
+Minimum: AAA  Anaa Airport, Anaa, French Polynesia
+Maximum: ZZV  Zanesville Municipal Airport, Zanesville, United States
+> range BOS BWI -q
+113 airports, 127 nodes visited
+> levels 3
+L0 (1): GKA
+L1 (2): AEY MAG
+L2 (4): AAE EGS HGU POM
+> remove AEY
+Deleted AEY (case D3: two children, replaced by inorder successor AFA)  validate: OK
+> validate
+validate: OK
+> levels 3
+L0 (1): GKA
+L1 (2): AFA MAG
+L2 (4): AAE EGS HGU POM
+> remove BOS
+Deleted BOS (case D2: only a left child, BOR)  validate: OK
+> rebalance
+Height: 12  Average depth: 10.7  Nodes: 6070
+> validate
+validate: OK
+> 

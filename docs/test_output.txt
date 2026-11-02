@@ -1,0 +1,89 @@
+Airport Code Lookup Service (BST). Type 'help' for commands.
+> load data/airports.dat
+Loaded 6072 airports (1626 lines skipped: no IATA code). Duplicates: 0
+Lines read: 7698  Records stored: 6072  from data/airports.dat
+Height: 177  Average depth: 18.3
+> test
+=== Rebuilding in file order, validating after every insert ===
+Inserted 6072, duplicates 0, validate after each of the 6072 inserts: OK
+Height: 177  Average depth: 18.3  Nodes: 6072
+
+=== Task 2: search cases ===
+-- root: find GKA
+Path: GKA (comparisons: 1)
+GKA  Goroka Airport, Goroka, Papua New Guinea
+    ICAO: AYGA   lat -6.08169, lon 145.39200
+-- a leaf (shallowest): find AAC
+Path: GKA -> AEY -> AAE -> AAA -> AAC (comparisons: 5)
+AAC  El Arish International Airport, El Arish, Egypt
+    ICAO: HEAR   lat 31.07330, lon 33.83580
+-- deepest node: find YZR
+Path: GKA -> MAG -> POM -> WWK -> YAM -> YAY -> YAZ -> YBB -> YBC -> YBG -> YBK -> YBL -> YBR -> YCB -> YCD -> YCG -> YCH -> YCL -> YCO -> YCT -> YCW -> YCY -> YZS -> YDA -> YDB -> YDF -> YDL -> YDN -> YDQ -> YEG -> YEK -> YEN -> YET -> YEU -> YEV -> YFB -> YFC -> YFE -> YFO -> YFR -> YFS -> YGK -> YGL -> YGP -> YGQ -> YGR -> YHB -> YHD -> YHI -> YHK -> YHM -> YHU -> YHY -> YHZ -> YIB -> YIO -> YJN -> YJT -> YKA -> YKF -> YKL -> YKY -> YKZ -> YLD -> YLJ -> YLL -> YLT -> YLW -> YMA -> YMJ -> YMM -> YMO -> YMW -> YMX -> YNA -> YND -> YNM -> YOC -> YOD -> YOJ -> YOW -> YPA -> YPE -> YPG -> YPL -> YPN -> YPQ -> YPR -> YPY -> YQA -> YQB -> YQF -> YQG -> YQH -> YQK -> YQL -> YQM -> YQQ -> YQR -> YQT -> YQU -> YQV -> YQW -> YQX -> YQY -> YQZ -> YRB -> YRI -> YRJ -> YRM -> YRT -> YSB -> YSC -> YSJ -> YSM -> YSR -> YSU -> YSY -> YTE -> YTH -> YTR -> YTS -> YTZ -> YUB -> YUL -> YUT -> YUX -> YUY -> YVC -> YVG -> YVM -> YVO -> YVP -> YVQ -> YVR -> YVT -> YVV -> YWA -> YWG -> YWK -> YWL -> YWY -> YXC -> YXD -> YXE -> YXH -> YXJ -> YXL -> YXP -> YXR -> YXS -> YXT -> YXU -> YXX -> YXY -> YYB -> YYC -> YYD -> YYE -> YYF -> YYG -> YYH -> YYJ -> YYL -> YYN -> YYQ -> YYR -> YYT -> YYU -> YYW -> YYY -> YYZ -> YZD -> YZE -> YZF -> YZH -> YZP -> YZR (comparisons: 178)
+YZR  Chris Hadfield Airport, Sarnia, Canada
+    ICAO: CYZR   lat 42.99940, lon -82.30890
+-- missing code: find XYZ
+Path: GKA -> MAG -> POM -> WWK -> YAM -> XFW -> XGN -> XLS -> XRY -> XVS -> YAI -> YAA -> XYA -> XYE -> (NULL) not found (comparisons: 14)
+-- smaller than every key: find 000
+Path: GKA -> AEY -> AAE -> AAA -> (NULL) not found (comparisons: 4)
+-- larger than every key: find ZZZ
+Path: GKA -> MAG -> POM -> WWK -> YAM -> YAY -> YAZ -> YBB -> YBC -> YBG -> YBK -> YBL -> YBR -> YCB -> YCD -> YCG -> YCH -> YCL -> YCO -> YCT -> YCW -> YCY -> YZS -> YZT -> YZU -> YZV -> YZW -> YZX -> ZFA -> ZFM -> ZND -> ZQW -> ZSE -> ZVA -> ZWA -> ZZU -> ZZV -> (NULL) not found (comparisons: 37)
+Minimum: AAA  Anaa Airport, Anaa, French Polynesia
+Maximum: ZZV  Zanesville Municipal Airport, Zanesville, United States
+
+=== Task 3: delete cases (top three levels before/after) ===
+-- D1 leaf: remove AAC
+  before:  L0 [GKA]  L1 [AEY MAG]  L2 [AAE EGS HGU POM]
+Deleted AAC (case D1: leaf)  validate: OK
+  after :  L0 [GKA]  L1 [AEY MAG]  L2 [AAE EGS HGU POM]
+  find AAC afterwards: not found (correct)
+-- D2 only a left child: remove GJT
+  before:  L0 [GKA]  L1 [AEY MAG]  L2 [AAE EGS HGU POM]
+Deleted GJT (case D2: only a left child, GJR)  validate: OK
+  after :  L0 [GKA]  L1 [AEY MAG]  L2 [AAE EGS HGU POM]
+  find GJT afterwards: not found (correct)
+-- D2 only a right child: remove GJM
+  before:  L0 [GKA]  L1 [AEY MAG]  L2 [AAE EGS HGU POM]
+Deleted GJM (case D2: only a right child, GJR)  validate: OK
+  after :  L0 [GKA]  L1 [AEY MAG]  L2 [AAE EGS HGU POM]
+  find GJM afterwards: not found (correct)
+-- D3 two children: remove AEY
+  before:  L0 [GKA]  L1 [AEY MAG]  L2 [AAE EGS HGU POM]
+Deleted AEY (case D3: two children, replaced by inorder successor AFA)  validate: OK
+  after :  L0 [GKA]  L1 [AFA MAG]  L2 [AAE EGS HGU POM]
+  find AEY afterwards: not found (correct)
+-- root: remove GKA
+  before:  L0 [GKA]  L1 [AFA MAG]  L2 [AAE EGS HGU POM]
+Deleted GKA (case D3: two children, replaced by inorder successor GKE)  validate: OK
+  after :  L0 [GKE]  L1 [AFA MAG]  L2 [AAE EGS HGU POM]
+  find GKA afterwards: not found (correct)
+
+=== Task 3(c): made-up airport QQQ ===
+Added QQQ  Dhan Ravichandran Field, Huntington, Imaginaria  validate: OK
+Path: GKE -> MAG -> POM -> WWK -> UAK -> SFJ -> RKV -> QLD -> REB -> QXH -> QLF -> QUY -> QNJ -> QPA -> QRO -> QPD -> QPS -> QRC -> QRA -> QPW -> QQT -> QQQ (comparisons: 22)
+QQQ  Dhan Ravichandran Field, Huntington, Imaginaria
+    ICAO: XQQQ   lat 42.34000, lon -71.09000
+Deleted QQQ (case D1: leaf)  validate: OK
+Path: GKE -> MAG -> POM -> WWK -> UAK -> SFJ -> RKV -> QLD -> REB -> QXH -> QLF -> QUY -> QNJ -> QPA -> QRO -> QPD -> QPS -> QRC -> QRA -> QPW -> QQT -> (NULL) not found (comparisons: 21)
+
+=== Restoring the full tree in file order ===
+Height: 177  Average depth: 18.3  Nodes: 6072
+> roundtrip saved_tree.txt
+Saved 6072 airports in preorder to saved_tree.txt
+Original: height 177, 6072 nodes
+Reloaded: height 177, 6072 nodes
+Same height: yes   Same level order (every level): yes   validate: OK
+  original top 3 levels:  L0 [GKA]  L1 [AEY MAG]  L2 [AAE EGS HGU POM]
+  reloaded top 3 levels:  L0 [GKA]  L1 [AEY MAG]  L2 [AAE EGS HGU POM]
+> list 5
+AAA  Anaa Airport, Anaa, French Polynesia
+AAC  El Arish International Airport, El Arish, Egypt
+AAE  Rabah Bitat Airport, Annaba, Algeria
+AAF  Apalachicola Regional Airport, Apalachicola, United States
+AAH  Aachen-Merzbrück Airport, Aachen, Germany
+... (6067 more)
+6072 airports listed in inorder; sorted: yes
+> stats
+Records with an IATA code: 6072
+Countries: 235   Airports in the United States: 1251
+Height: 177  Average depth: 18.3  Nodes: 6072
+> 

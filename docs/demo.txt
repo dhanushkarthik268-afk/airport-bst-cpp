@@ -1,0 +1,13 @@
+# Demo script for the screen recording: ./airports --echo < docs/demo.txt
+load data/airports.dat
+find BOS
+find XYZ
+min
+range BOS BWI -q
+levels 3
+remove AEY
+validate
+levels 3
+remove BOS
+rebalance
+validate
